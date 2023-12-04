@@ -1,7 +1,28 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+require 'faker'
+
+OrderItem.delete_all
+Order.delete_all
+Product.delete_all
+Category.delete_all
+# User.delete_all
+
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='order_items';")
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='orders';")
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='products';")
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='categories';")
+# ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='users';")
+
+# Create 4 categories
+categories = 4.times.map do
+    Category.create(name: Faker::Food.ethnic_category)
+end
+
+# Create 100 products associated with the categories
+100.times do
+    category = categories.sample
+    category.products.create(
+      name: Faker::Food.dish,
+      description: Faker::Food.description,
+      price: Faker::Commerce.price(range: 5.0..100.0),
+    )
+  end
