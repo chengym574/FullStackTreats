@@ -1,4 +1,5 @@
 require 'faker'
+require 'csv'
 
 OrderItem.delete_all
 Order.delete_all
@@ -12,17 +13,16 @@ ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='p
 ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='categories';")
 # ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='users';")
 
-# Create 4 categories
-categories = 4.times.map do
-    Category.create(name: Faker::Food.ethnic_category)
-end
+file = Rails.root.join("db/BakeryDataset.csv")
+puts "Loading Products: #{file}"
 
-# Create 100 products associated with the categories
-100.times do
-    category = categories.sample
-    category.products.create(
-      name: Faker::Food.dish,
-      description: Faker::Food.description,
-      price: Faker::Commerce.price(range: 5.0..100.0),
+CSV.foreach(file, headers: true) do |row|
+    category = Category.find_or_create_by(name: row["category"])
+
+    product = Product.create(
+        name: row["name"],
+        description: row["description"],
+        price: row["price"],
+        category_id: category.id
     )
-  end
+end
