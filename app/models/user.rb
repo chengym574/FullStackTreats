@@ -5,16 +5,19 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  self.inheritance_column = :_type_disabled
 
   has_many :orders
 
-  enum role: { admin: 'admin', regular: 'regular' }
+  enum role: { regular: 'regular', admin: 'admin' }
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
   validate :validate_username
-
+  validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :encrypted_password, presence: true 
+  validates :role, presence: true, inclusion: { in: %w(regular admin) }
+  validates :reset_password_token, uniqueness: true, allow_blank: true 
+  
   def login
     @login || self.username || self.email
   end
