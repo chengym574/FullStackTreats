@@ -20,6 +20,8 @@
       <%= link_to category.name, category_path(category) %>
     <% end %>
 
+    <%= render 'shared/search_bar' %>
+
     <ul>
       <% @products.each do |product| %>
       <li><%= product.name %> - <%= product.price %></li>
