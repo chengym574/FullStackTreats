@@ -7,15 +7,17 @@
 </head>
 
 <body>
-  <%= link_to 'Sign Up', new_user_registration_path %>
-  <%= link_to 'Log In', new_user_session_path %>
-  <%= button_to "Log out", destroy_user_session_path, method: 'delete' %>
-  <%= link_to 'About', pages_about_path %>
-  <%= link_to 'Contact', pages_contact_path %>
-
-  <h1>Home Index</h1>
+  <% if !current_user %>
+    <%= link_to 'Sign Up', new_user_registration_path %>
+    <%= link_to 'Log In', new_user_session_path %>
+  <% end %>
 
   <% if current_user %>
+    <%= button_to "Log out", destroy_user_session_path, method: 'delete' %>
+    <%= link_to 'About', pages_about_path %>
+    <%= link_to 'Contact', pages_contact_path %>
+    <h1>Home Index</h1>
+
     <p>Welcome, <%= current_user.username %>.</p>
     <p>You are a [<%=current_user.role%>] user.</p>
 
@@ -29,9 +31,21 @@
 
     <%= render 'shared/search_bar' %>
 
+    <% if current_user.admin? %>
+      <%= link_to 'Add New Product', new_product_path %>
+    <% end %>
+
     <ul>
       <% @products.each do |product| %>
-      <li><%= link_to product.name, product_path(product) %> - <%= product.price %></li>
+        <li>
+          <%= link_to product.name, product_path(product) %> - <%= product.price %>
+          <% if current_user.admin? %>
+            <%= link_to 'Edit', edit_product_path(product) %>
+            <%= form_with(url: product_path(product), method: :delete, data: { confirm: 'Are you sure?' }) do |form| %>
+              <%= form.submit 'Delete' %>
+            <% end %>
+          <% end %>
+        </li>
       <% end %>
     </ul>
 
