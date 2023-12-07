@@ -13,8 +13,13 @@
 
   <h1>Home Index</h1>
 
-  <% if user_signed_in? %>
-    <p>Welcome <%= current_user.username %></p>
+  <% if current_user %>
+    <p>Welcome, <%= current_user.username %>.</p>
+    <p>You are a [<%=current_user.role%>] user.</p>
+
+    <% if current_user.admin? %>
+      <p>There are <%= User.count %> users in the system.</p> 
+    <% end %>
 
     <% @categories.each do |category| %>
       <%= link_to category.name, category_path(category) %>
@@ -24,7 +29,7 @@
 
     <ul>
       <% @products.each do |product| %>
-      <li><%= product.name %> - <%= product.price %></li>
+      <li><%= link_to product.name, product_path(product) %> - <%= product.price %></li>
       <% end %>
     </ul>
 
