@@ -1,0 +1,5 @@
+<h1>Edit About Page</h1>
+<%= form_tag update_about_path, method: :patch do %>
+  <%= text_area_tag :about_content, @about_content %>
+  <%= submit_tag 'Update' %>
+<% end %>

@@ -1,0 +1,5 @@
+<h1>About Page</h1>
+<p><%= @about_content %></p>
+<% if current_user.admin? %>
+  <%= link_to 'Edit', edit_about_path %>
+<% end %>
