@@ -8,15 +8,20 @@ class User < ApplicationRecord
 
   has_many :orders
 
-  enum role: { regular: 'regular', admin: 'admin' }
+  enum role: { regular: 0, admin: 1 }
+  after_initialize :set_default_role, :if => :new_record?
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
   validate :validate_username
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :encrypted_password, presence: true 
-  validates :role, presence: true, inclusion: { in: %w(regular admin) }
   validates :reset_password_token, uniqueness: true, allow_blank: true 
+  validates :role, inclusion: { in: User.roles.keys }
+
+  def set_default_role
+    self.role ||= 0
+  end
   
   def login
     @login || self.username || self.email
