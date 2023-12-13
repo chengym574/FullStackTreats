@@ -19,6 +19,8 @@ Rails.application.routes.draw do
 
   resources :products
 
+  resources :orders, only: [:create]
+
   get '/search', to: 'products#search'
 
   post '/add_to_cart/:id', to: 'cart#add_to_cart', as: 'add_to_cart'
@@ -26,4 +28,8 @@ Rails.application.routes.draw do
   get '/remove_item/:id', to: 'cart#remove_item', as: 'remove_item'
   get '/cart', to: 'cart#show_cart', as: 'cart'
 
+  get '/confirm_order', to: 'checkout#confirm_order', as: 'confirm_order_checkout'
+  get '/checkout', to: 'checkout#checkout', as: 'checkout_checkout'
+  get '/order_confirmed', to: 'checkout#order_confirmed', as: 'order_confirmed'
+  patch '/update_address', to: 'checkout#update_address', as: 'address_checkout'
 end
