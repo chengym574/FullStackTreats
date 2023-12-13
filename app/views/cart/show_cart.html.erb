@@ -1,0 +1,20 @@
+<%= render 'shared/navbar' %>
+<h1>Your Cart</h1>
+
+<% if session[:cart].present? %>
+  <ul>
+    <% session[:cart].each do |product_id, quantity| %>
+      <% product = Product.find(product_id) %>
+      <li>
+        <%= product.name %> - Quantity:
+        <%= form_tag update_quantity_path(id: product.id), method: :patch do %>
+          <%= number_field_tag :quantity, quantity, in: 1..10 %>
+          <%= submit_tag 'Update' %>
+        <% end %>
+        <%= link_to 'Remove', remove_item_path(product), method: :post, data: { confirm: 'Are you sure?' } %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Your cart is empty</p>
+<% end %>

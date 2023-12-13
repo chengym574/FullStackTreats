@@ -21,4 +21,9 @@ Rails.application.routes.draw do
 
   get '/search', to: 'products#search'
 
+  post '/add_to_cart/:id', to: 'cart#add_to_cart', as: 'add_to_cart'
+  patch '/update_quantity/:id', to: 'cart#update_quantity', as: 'update_quantity'
+  get '/remove_item/:id', to: 'cart#remove_item', as: 'remove_item'
+  get '/cart', to: 'cart#show_cart', as: 'cart'
+
 end
