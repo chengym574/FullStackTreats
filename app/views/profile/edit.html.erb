@@ -1,16 +1,32 @@
-<%= render 'shared/navbar' %>
-<%= form_for @location, url: update_profile_path, method: :patch do |f| %>
-  <div>
-    <%= f.label :address, 'Address' %>
-    <%= f.text_field :address %>
-  </div>
-  <div>
-    <%= f.label :city, 'City' %>
-    <%= f.text_field :city %>
-  </div>
-  <div>
-    <%= f.label :province, 'Province' %>
-    <%= f.text_field :province %>
-  </div>
-  <%= f.submit 'Save Address' %>
-<% end %>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Edit Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body class="bg-gray-100">
+  <% if current_user %>
+    <%= render 'shared/navbar' %>
+    <div class="container mx-auto px-4 py-8">
+      <%= form_for @location, url: update_profile_path, method: :patch, html: { class: 'max-w-md mx-auto bg-white p-6 rounded shadow-md border border-gray-300' } do |f| %>
+        <div class="mb-4">
+          <%= f.label :address, 'Address', class: 'block font-semibold mb-1' %>
+          <%= f.text_field :address, class: 'border border-gray-300 px-3 py-2 rounded focus:outline-none w-full' %>
+        </div>
+        <div class="mb-4">
+          <%= f.label :city, 'City', class: 'block font-semibold mb-1' %>
+          <%= f.text_field :city, class: 'border border-gray-300 px-3 py-2 rounded focus:outline-none w-full' %>
+        </div>
+        <div class="mb-4">
+          <%= f.label :province, 'Province', class: 'block font-semibold mb-1' %>
+          <%= f.text_field :province, class: 'border border-gray-300 px-3 py-2 rounded focus:outline-none w-full' %>
+        </div>
+        <%= f.submit 'Save Address', class: 'bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none' %>
+      <% end %>
+    </div>
+  <% end %>
+</body>
+
+</html>

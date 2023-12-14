@@ -1,7 +1,22 @@
-<h1><%= @category.name %> Products</h1>
+<!DOCTYPE html>
+<html>
 
-<ul>
-  <% @products.each do |product| %>
-    <li><%= link_to product.name, product_path(product) %></li>
+<head>
+  <title>Category</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body class="bg-gray-100">
+  <% if current_user %>
+    <%= render 'shared/navbar' %>
+
+    <div class="container mx-auto px-4 py-8">
+      <h1 class="text-2xl font-bold mb-2 text-center"><%= @category.name %></h1>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        <%= render 'shared/product' %>
+      </div>
+    </div>
   <% end %>
-</ul>
+</body>
+
+</html>

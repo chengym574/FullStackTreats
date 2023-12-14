@@ -1,58 +1,52 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <title>Home Index</title>
+  <title>FullStackTreats</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
-<body>
+<body class="bg-gray-100">
   <% if !current_user %>
-    <%= link_to 'Sign Up', new_user_registration_path %>
-    <%= link_to 'Log In', new_user_session_path %>
+    <div class="flex justify-end p-4">
+      <a href="<%= new_user_registration_path %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Sign Up</a>
+      <a href="<%= new_user_session_path %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">Log In</a>
+    </div>
   <% end %>
 
   <% if current_user %>
     <%= render 'shared/navbar' %>
-    <%= button_to "Log out", destroy_user_session_path, method: 'delete' %>
-    <h1>Home Index</h1>
+    <div class="container mx-auto px-4 py-8">
+      <h1 class="text-3xl font-bold mb-4 text-center">FullStackTreats</h1>
 
-    <p>Welcome, <%= current_user.username %>.</p>
-    <p>You are a [<%=current_user.role%>] user.</p>
-
-    <% if current_user.admin? %>
-      <p>There are <%= User.count %> users in the system.</p> 
-    <% end %>
-
-    <% @categories.each do |category| %>
-      <%= link_to category.name, category_path(category) %>
-    <% end %>
-
-    <%= render 'shared/search_bar' %>
-
-    <% if current_user.admin? %>
-      <%= link_to 'Add New Product', new_product_path %>
-    <% end %>
-
-    <ul>
-      <% @products.each do |product| %>
-        <li>
-          <%= link_to product.name, product_path(product) %> - <%= product.price %> 
-          <%= button_to 'Add to Cart', add_to_cart_path(product), method: :post %>
-          <% if current_user.admin? %>
-            <%= link_to 'Edit', edit_product_path(product) %>
-            <%= form_with(url: product_path(product), method: :delete, data: { confirm: 'Are you sure?' }) do |form| %>
-              <%= form.submit 'Delete' %>
-            <% end %>
-          <% end %>
-        </li>
+      <% if current_user.admin? %>
+        <p>There are <%= User.count %> users in the system.</p>
       <% end %>
-    </ul>
 
-    <div>
-      <%= paginate @products %>
+      <div class="flex justify-center mb-4">
+        <%= render 'shared/search_bar' %>
+      </div>
+
+      <div class="flex flex-wrap justify-between mb-4">
+        <% @categories.each do |category| %>
+          <a href="<%= category_path(category) %>"
+             class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded mb-2 mr-2">
+            <%= category.name %>
+          </a>
+        <% end %>
+      </div>
+
+      <% if current_user.admin? %>
+        <a href="<%= new_product_path %>" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add New Product</a>
+      <% end %>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        <%= render 'shared/product' %>
+      </div>
+
+      <div class="flex justify-center mt-4">
+        <%= paginate @products, class: 'pagination' %>
+      </div>
     </div>
-
   <% end %>
 </body>
 

@@ -1,4 +1,24 @@
-<h1><%= @product.name %> Details</h1>
+<!DOCTYPE html>
+<html>
 
-<p><strong>Description:</strong> <%= @product.description %></p>
-<p><strong>Price:</strong> <%= @product.price %></p>
+<head>
+  <title>Product Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body class="bg-gray-100">
+  <% if current_user %>
+    <%= render 'shared/navbar' %>
+    <div class="container mx-auto px-4 py-8">
+      <h1 class="text-3xl font-bold mb-4 text-center">Product Details</h1>
+
+      <div class="bg-white p-6 rounded shadow-md border border-gray-300">
+        <h2 class="text-2xl font-semibold mb-2 text-center"><%= @product.name %> Details</h2>
+        <p><strong>Description:</strong> <%= @product.description %></p>
+        <p><strong>Price:</strong> <%= number_to_currency(@product.price) %></p>
+      </div>
+    </div>
+  <% end %>
+</body>
+
+</html>

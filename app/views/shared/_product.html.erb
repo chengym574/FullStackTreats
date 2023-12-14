@@ -1,0 +1,29 @@
+<% @products.each do |product| %>
+    <div class="bg-gray-100 p-6 rounded shadow-md border border-gray-300 relative">
+        <div class="flex justify-between items-center mb-4">
+            <%= link_to product.name, product_path(product), class: "text-blue-600 hover:underline font-semibold text-lg text-center w-full" %>
+        </div>
+
+        <div class="h-24 overflow-hidden mb-2">
+            <p class="text-gray-700">
+                <%= truncate(product.description, length: 100, separator: ' ') %>
+            </p>
+        </div>
+
+        <% if current_user.regular? %>
+            <div class="text-center">
+                <span class="text-gray-600 font-semibold block mb-1"><%= number_to_currency(product.price) %></span>
+                <%= button_to 'Add to Cart', add_to_cart_path(product), method: :post, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none mt-2" %>
+            </div>
+        <% end %>
+
+        <% if current_user.admin? %>
+            <div class="flex justify-center space-x-2 mt-2">
+                <%= link_to 'Edit', edit_product_path(product), class: "bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded" %>
+                <%= form_with(url: product_path(product), method: :delete, data: { confirm: 'Are you sure?' }) do |form| %>
+                    <%= form.submit 'Delete', class: "bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" %>
+                <% end %>
+            </div>
+        <% end %>
+    </div>
+<% end %>

@@ -1,12 +1,21 @@
-<nav>
-  <%= link_to "Home", root_path %>
-  <%= link_to 'About', pages_about_path %>
-  <%= link_to 'Contact', pages_contact_path %>
-  <%= link_to 'Profile', edit_profile_path %>
-  <%= link_to cart_path do %>
-    Cart
-    <% if session[:cart].present? %>
-    <span>(<%= session[:cart].values.sum %>)</span>
-    <% end %>
-  <% end %>
+<nav class="bg-gray-800 text-white py-4">
+  <div class="container mx-auto flex justify-between items-center">
+    <div class="flex items-center">
+      <%= link_to "Home", root_path, class: "mr-4" %>
+      <%= link_to 'About', pages_about_path, class: "mr-4" %>
+      <%= link_to 'Contact', pages_contact_path %>
+    </div>
+    <div class="flex items-center relative">
+      <%= link_to cart_path, class: "relative mr-4" do %>
+        Cart
+        <% if session[:cart].present? %>
+        <span class="bg-red-500 text-white rounded-full h-4 w-4 flex items-center justify-center absolute -bottom-1 -right-0 transform translate-x-2">
+          <%= session[:cart].values.sum %>
+        </span>
+        <% end %>
+      <% end %>
+      <%= link_to "Profile[#{current_user.role}]", edit_profile_path, class: "mr-4" %>
+      <%= button_to "Log out", destroy_user_session_path, method: 'delete' %>
+    </div>
+  </div>
 </nav>

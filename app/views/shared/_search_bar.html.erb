@@ -1,5 +1,5 @@
-<%= form_tag(search_path, method: :get) do %>
-  <%= text_field_tag :search, params[:search], placeholder: "Search products" %>
-  <%= select_tag :category, options_from_collection_for_select(Category.all, 'id', 'name'), include_blank: true %>
-  <%= submit_tag "Search" %>
+<%= form_tag(search_path, method: :get, class: "flex items-center mb-4") do %>
+  <%= text_field_tag :search, params[:search], placeholder: "Search products", class: "border border-gray-300 px-4 py-2 rounded-l-md focus:outline-none flex-1" %>
+  <%= select_tag :category, options_from_collection_for_select(Category.all, 'id', 'name'), include_blank: true, class: "border border-l-0 border-gray-300 px-4 py-2 rounded-r-md focus:outline-none" %>
+  <%= submit_tag "Search", class: "bg-blue-500 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-600 focus:outline-none" %>
 <% end %>

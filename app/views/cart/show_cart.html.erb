@@ -1,21 +1,26 @@
 <%= render 'shared/navbar' %>
-<h1>Your Cart</h1>
 
-<% if session[:cart].present? %>
-  <ul>
-    <% session[:cart].each do |product_id, quantity| %>
-      <% product = Product.find(product_id) %>
-      <li>
-        <%= product.name %> - Quantity:
-        <%= form_tag update_quantity_path(id: product.id), method: :patch do %>
-          <%= number_field_tag :quantity, quantity, in: 1..10 %>
-          <%= submit_tag 'Update' %>
-        <% end %>
-        <%= link_to 'Remove', remove_item_path(product), method: :post, data: { confirm: 'Are you sure?' } %>
-      </li>
-    <% end %>
-  </ul>
-  <%= link_to 'Checkout', checkout_checkout_path %>
-<% else %>
-  <p>Your cart is empty</p>
-<% end %>
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-4">Your Cart</h1>
+
+  <% if session[:cart].present? %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <% session[:cart].each do |product_id, quantity| %>
+        <% product = Product.find(product_id) %>
+        <div class="border rounded p-4">
+          <p class="text-lg mb-2"><%= product.name %> - Quantity:</p>
+          <%= form_tag update_quantity_path(id: product.id), method: :patch, class: "flex items-center" do %>
+            <%= number_field_tag :quantity, quantity, in: 1..10, class: "border border-gray-300 px-2 py-1 rounded ml-2" %>
+            <%= submit_tag 'Update', class: "bg-blue-500 text-white px-3 py-1 rounded ml-2 hover:bg-blue-600 focus:outline-none" %>
+          <% end %>
+          <%= link_to 'Remove', remove_item_path(product), method: :post, data: { confirm: 'Are you sure?' }, class: "text-red-500 ml-2" %>
+        </div>
+      <% end %>
+    </div>
+    <div class="mt-4 sm:grid sm:justify-end">
+      <%= link_to 'Checkout', checkout_checkout_path, class: "bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 focus:outline-none" %>
+    </div>
+  <% else %>
+    <p>Your cart is empty</p>
+  <% end %>
+</div>

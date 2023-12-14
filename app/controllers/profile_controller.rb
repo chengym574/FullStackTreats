@@ -1,6 +1,4 @@
 class ProfileController < ApplicationController
-    # before_action :authenticate_user!
-
   def edit
     @user = current_user
     @location = @user.location || Location.new 
@@ -8,7 +6,7 @@ class ProfileController < ApplicationController
 
   def update
     @user = current_user
-    @location = @user.location_id || Location.new 
+    @location = @user.location || Location.new 
     if @location.update(location_params) && @user.update(location_id: @location.id)
       redirect_to root_path, notice: 'Profile updated successfully!'
     else

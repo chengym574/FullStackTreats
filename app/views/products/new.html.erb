@@ -1,41 +1,43 @@
-<h1>New Product</h1>
+<%= render 'shared/navbar' %>
 
-<%= form_with(model: @product, local: true, data: {turbo: false}) do |form| %>
-  <% if @product.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-4">New Product</h1>
 
-      <ul>
-        <% @product.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
+  <%= form_with(model: @product, local: true, data: { turbo: false }) do |form| %>
+    <% if @product.errors.any? %>
+      <div id="error_explanation" class="bg-red-100 text-red-700 p-4 rounded mb-4">
+        <h2 class="text-lg font-semibold mb-2"><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+
+        <ul>
+          <% @product.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="mb-4">
+      <%= form.label :name, class: "block font-semibold mb-1" %>
+      <%= form.text_field :name, class: "border border-gray-300 px-3 py-2 rounded focus:outline-none w-full" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :description, class: "block font-semibold mb-1" %>
+      <%= form.text_area :description, class: "border border-gray-300 px-3 py-2 rounded focus:outline-none w-full" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :price, class: "block font-semibold mb-1" %>
+      <%= form.text_field :price, class: "border border-gray-300 px-3 py-2 rounded focus:outline-none w-full" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :category_id, class: "block font-semibold mb-1" %>
+      <%= form.collection_select :category_id, Category.all, :id, :name, { prompt: "Select Category" }, class: "border border-gray-300 px-3 py-2 rounded focus:outline-none w-full" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.submit "Create Product", class: "bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none" %>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
-  </div>
-
-  <div class="field">
-    <%= form.label :price %>
-    <%= form.text_field :price %>
-  </div>
-
-  <div class="field">
-    <%= form.label :category_id %>
-    <%= form.collection_select :category_id, Category.all, :id, :name %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
-
-<%= link_to 'Home', root_path %>
+</div>
