@@ -32,4 +32,7 @@ Rails.application.routes.draw do
   get '/checkout', to: 'checkout#checkout', as: 'checkout_checkout'
   get '/order_confirmed', to: 'checkout#order_confirmed', as: 'order_confirmed'
   patch '/update_address', to: 'checkout#update_address', as: 'address_checkout'
+
+  get '/profile/edit', to: 'profile#edit', as: 'edit_profile'
+  patch '/profile/update', to: 'profile#update', as: 'update_profile'
 end

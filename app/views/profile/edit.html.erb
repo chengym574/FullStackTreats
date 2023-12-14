@@ -1,0 +1,16 @@
+<%= render 'shared/navbar' %>
+<%= form_for @location, url: update_profile_path, method: :patch do |f| %>
+  <div>
+    <%= f.label :address, 'Address' %>
+    <%= f.text_field :address %>
+  </div>
+  <div>
+    <%= f.label :city, 'City' %>
+    <%= f.text_field :city %>
+  </div>
+  <div>
+    <%= f.label :province, 'Province' %>
+    <%= f.text_field :province %>
+  </div>
+  <%= f.submit 'Save Address' %>
+<% end %>
