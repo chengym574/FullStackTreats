@@ -1,7 +1,9 @@
 class CheckoutController < ApplicationController
   def update_address
     @user = current_user
-    if @user.update(user_params)
+    @location = @user.location || Location.new 
+
+    if @location.update(location_params)
       redirect_to checkout_checkout_path, notice: 'Address updated successfully!'
     else
       render :checkout
@@ -9,8 +11,11 @@ class CheckoutController < ApplicationController
   end
 
   def confirm_order
-    if current_user.address.blank? || current_user.city.blank? || current_user.province.blank?
-      redirect_to checkout_checkout_path, alert: 'Please provide shipping address information to confirm the order.'
+    user_location = current_user.location
+
+    if user_location&.address.blank? || user_location&.city.blank? || user_location&.province.blank?
+      flash[:alert] = 'Please provide shipping address information to confirm the order.'
+      redirect_to checkout_checkout_path
       return
     else
       order = Order.create!(
@@ -43,10 +48,11 @@ class CheckoutController < ApplicationController
       { product: product, quantity: quantity }
     end
 
+    @user_location = current_user.location
     @subtotal = calculate_subtotal(@cart_items)
-    @gst = calculate_gst(@subtotal, current_user.province)
-    @pst = calculate_pst(@subtotal, current_user.province)
-    @hst = calculate_hst(@subtotal, current_user.province)
+    @gst = calculate_gst(@subtotal, @user_location.province)
+    @pst = calculate_pst(@subtotal, @user_location.province)
+    @hst = calculate_hst(@subtotal, @user_location.province)
     @total = calculate_total(@subtotal, @gst, @pst, @hst)
     session[:order_total] = @total
 
@@ -96,7 +102,7 @@ class CheckoutController < ApplicationController
     subtotal + pst + gst + hst
   end
 
-  def user_params
-    params.require(:user).permit(:address, :city, :province)
+  def location_params
+    params.require(:location).permit(:address, :city, :province)
   end
 end

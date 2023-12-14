@@ -2,18 +2,18 @@
 <h1>Order Confirmation</h1>
 
 <h2>Shipping Address</h2>
-<%= form_for current_user, url: address_checkout_path, method: :patch, data: {turbo: false} do |f| %>
+<%= form_for current_user.location || Location.new, url: address_checkout_path, method: :patch, data: {turbo: false} do |f| %>
   <div>
     <%= f.label :address, 'Address' %>
-    <%= f.text_field :address %>
+    <%= f.text_field :address, value: current_user.location&.address, placeholder: 'Enter Address' %>
   </div>
   <div>
     <%= f.label :city, 'City' %>
-    <%= f.text_field :city %>
+    <%= f.text_field :city, value: current_user.location&.city, placeholder: 'Enter City' %>
   </div>
   <div>
     <%= f.label :province, 'Province' %>
-    <%= f.text_field :province %>
+    <%= f.text_field :province, value: current_user.location&.province, placeholder: 'Enter Province' %>
   </div>
   <%= f.submit 'Save Address' %>
 <% end %>
