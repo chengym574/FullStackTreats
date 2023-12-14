@@ -76,3 +76,5 @@ gem 'devise'
 gem 'faker'
 
 gem 'kaminari'
+
+gem 'tailwindcss-rails', '~> 2.0'
